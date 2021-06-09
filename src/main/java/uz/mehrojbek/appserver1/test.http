@@ -1,0 +1,10 @@
+POST localhost:8080/api/credit
+Content-Type: application/json
+
+{
+  "series": "AA",
+  "number": "4541768",
+  "monthlySalary": "1000000",
+  "creditAmount": "5000000",
+  "creditPercent": "15"
+}
