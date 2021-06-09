@@ -23,12 +23,7 @@ public class CreditService {
     @Autowired
     CreditRequestRepository creditRequestRepository;
 
-
-    public ApiResponse calculateCredit(CreditDto creditDto) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        String url = "http://localhost:8081/api/person?series=" + creditDto.getSeries() + "&number=" + creditDto.getNumber();
-
+    public HttpHeaders setHeader(){
         String auth = SystemUtils.USERNAME + ":" + SystemUtils.PASSWORD;
         byte[] encodedAuth = Base64.getEncoder().encode(
                 auth.getBytes(StandardCharsets.US_ASCII));
@@ -36,6 +31,16 @@ public class CreditService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", authHeader);
+        return headers;
+    }
+
+
+    public ApiResponse calculateCredit(CreditDto creditDto) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        String url = "http://localhost:8081/api/person?series=" + creditDto.getSeries() + "&number=" + creditDto.getNumber();
+
+        HttpHeaders headers = setHeader();
 
         try {
             ResponseEntity<ApiResponse> apiResponseResponseEntity = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(headers), ApiResponse.class);
